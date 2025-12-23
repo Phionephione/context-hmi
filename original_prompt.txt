@@ -1,0 +1,1678 @@
+Role & Objective:
+Act as a Senior Frontend Engineer and UI/UX Designer. I need you to build a complete, multi-page proThese are the existing files in the app:--- START OF FILE index.tsx ---
+
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Could not find root element to mount to");
+}
+
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);--- START OF FILE metadata.json ---
+
+{
+  "name": "Context-Aware HMI for Autonomous Transitions",
+  "description": "A high-performance portfolio website showcasing a technical engineering project for safer human-machine transitions in autonomous driving.",
+  "requestFramePermissions": []
+}--- START OF FILE index.html ---
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Context-Aware HMI Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #020617; /* slate-950 */
+      color: #f8fafc; /* slate-50 */
+      margin: 0;
+      padding: 0;
+    }
+    .grid-lines {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    .glass {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020617;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react/": "https://esm.sh/react@19.0.0/",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/": "https://esm.sh/react-dom@19.0.0/",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0?external=react",
+    "react-router-dom": "https://esm.sh/react-router-dom@7.0.1?external=react,react-dom",
+    "framer-motion": "https://esm.sh/framer-motion@11.11.17?external=react,react-dom"
+  }
+}
+</script>
+</head>
+<body class="grid-lines">
+  <div id="root"></div>
+  <script type="module" src="index.tsx"></script>
+</body>
+</html>--- START OF FILE types.ts ---
+
+
+import { ReactNode } from 'react';
+
+export interface NavLink {
+  name: string;
+  path: string;
+}
+
+export interface Feature {
+  title: string;
+  description: string;
+  icon: ReactNode;
+  color: 'cyan' | 'amber' | 'white';
+}
+
+export interface ResearchPaper {
+  authors: string;
+  year: number;
+  title: string;
+  focus: string;
+}
+
+export interface ArchitectureModule {
+  id: string;
+  name: string;
+  hardware: string;
+  role: string;
+  responsibilities: string[];
+}--- START OF FILE constants.tsx ---
+
+
+import React from 'react';
+import { Cpu, Eye, Activity, Zap, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Feature, ResearchPaper, ArchitectureModule } from './types';
+
+export const NAV_LINKS = [
+  { name: 'Home', path: '/' },
+  { name: 'Problem', path: '/about' },
+  { name: 'Architecture', path: '/architecture' },
+  { name: 'Simulation', path: '/simulation' },
+  { name: 'Methodology', path: '/methodology' },
+  { name: 'Results', path: '/results' },
+];
+
+export const HIGHLIGHTS: Feature[] = [
+  {
+    title: 'Real-Time Monitoring',
+    description: 'NVIDIA Jetson Nano powered AI models for gaze tracking, drowsiness, and head orientation detection.',
+    icon: <Eye className="w-8 h-8" />,
+    color: 'cyan'
+  },
+  {
+    title: 'Context Analysis',
+    description: 'Raspberry Pi 4 integrating GPS, Speed, and IMU data to evaluate external driving environments.',
+    icon: <Activity className="w-8 h-8" />,
+    color: 'white'
+  },
+  {
+    title: 'Multi-Modal Alerts',
+    description: 'STM32 Nucleo driven haptics and audio feedback for low-latency transition requests.',
+    icon: <Zap className="w-8 h-8" />,
+    color: 'amber'
+  }
+];
+
+export const PAIN_POINTS = [
+  { title: 'Static Rule Bases', desc: 'Current HMIs ignore the driver’s current cognitive state.' },
+  { title: 'Delayed Take-Over (TOR)', desc: 'Transition requests are often too late for effective human reaction.' },
+  { title: 'Transparency Gaps', desc: 'Drivers lack clear reasoning behind system-initiated transitions.' },
+  { title: 'High Workload', desc: 'Existing systems overwhelm drivers with excessive or vague alerts.' }
+];
+
+export const ARCHITECTURE_MODULES: ArchitectureModule[] = [
+  {
+    id: 'module1',
+    name: 'Driver Monitoring',
+    hardware: 'NVIDIA Jetson Nano',
+    role: 'The "Eyes"',
+    responsibilities: [
+      'Facial landmark detection via MediaPipe',
+      'Eye Gaze Tracking (In-attentiveness detection)',
+      'PERCLOS Drowsiness scoring',
+      'Head Pose Orientation analysis'
+    ]
+  },
+  {
+    id: 'module2',
+    name: 'Decision Core',
+    hardware: 'Raspberry Pi 4',
+    role: 'The "Brain"',
+    responsibilities: [
+      'Sensor Fusion (GPS + IMU + Speed)',
+      'Environmental Complexity Evaluation',
+      'Fuzzy Logic for Alert Severity',
+      'Data Logging & System Sync'
+    ]
+  },
+  {
+    id: 'module3',
+    name: 'Feedback Control',
+    hardware: 'STM32 Nucleo-F401RE',
+    role: 'The "Reflexes"',
+    responsibilities: [
+      'Low-latency PWM for Haptic Motors',
+      'Multi-color RGB Visual Alerts',
+      'Frequency-modulated Buzzer tones',
+      'Hardware-level Safety Interrupts'
+    ]
+  }
+];
+
+export const LITERATURE_REVIEW: ResearchPaper[] = [
+  {
+    authors: 'Wintersberger et al.',
+    year: 2021,
+    title: 'Multi-modal interfaces for transitions',
+    focus: 'Combining haptics and visual cues to reduce reaction time.'
+  },
+  {
+    authors: 'Eriksson & Stanton',
+    year: 2017,
+    title: 'Take-over time variability',
+    focus: 'Analysis of how secondary tasks impact transition safety.'
+  },
+  {
+    authors: 'Walch et al.',
+    year: 2018,
+    title: 'Cooperative HMI Design',
+    focus: 'Strategies for establishing trust between driver and vehicle AI.'
+  }
+];
+
+export const RESULTS_CHECKLIST = [
+  'Reduced Take-Over Time (TOR) by ~25%',
+  'Increased Driver Trust Score (SATI Scale)',
+  'Scalable ARM-based Embedded Architecture',
+  'Modular Sensor Integration Framework'
+];--- START OF FILE components/Layout.tsx ---
+
+
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Cpu } from 'lucide-react';
+import { NAV_LINKS } from '../constants';
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const location = useLocation();
+
+  return (
+    <nav className="fixed top-0 left-0 w-full z-50 glass border-b border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <Link to="/" className="flex items-center space-x-2">
+            <Cpu className="text-cyan-400 w-8 h-8" />
+            <span className="text-white font-bold tracking-tighter text-lg uppercase hidden sm:block">Context-HMI</span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex space-x-8">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`text-sm font-medium transition-colors ${
+                  location.pathname === link.path ? 'text-cyan-400' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-slate-300">
+              {isOpen ? <X /> : <Menu />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Nav */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden glass overflow-hidden"
+          >
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className="block px-3 py-2 text-slate-300 hover:text-white"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+const Footer = () => (
+  <footer className="border-t border-slate-800 py-12 bg-slate-950">
+    <div className="max-w-7xl mx-auto px-4 text-center">
+      <Cpu className="mx-auto text-slate-600 mb-4" />
+      <p className="text-slate-500 text-sm">
+        © 2024 Engineering Project Portfolio. Developed for Autonomous HMI Research.
+      </p>
+    </div>
+  </footer>
+);
+
+export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow pt-16">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
+};--- START OF FILE components/UI.tsx ---
+
+
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export const SectionHeader: React.FC<{ title: string; subtitle?: string; accent?: string }> = ({ 
+  title, subtitle, accent = 'text-cyan-400' 
+}) => (
+  <div className="mb-12">
+    <motion.h2 
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      className="text-3xl md:text-4xl font-bold tracking-tight mb-4"
+    >
+      <span className={accent}>|</span> {title}
+    </motion.h2>
+    {subtitle && (
+      <motion.p 
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1 }}
+        className="text-slate-400 max-w-2xl"
+      >
+        {subtitle}
+      </motion.p>
+    )}
+  </div>
+);
+
+export const GlowingCard: React.FC<{ children: React.ReactNode; className?: string; color?: 'cyan' | 'amber' }> = ({ 
+  children, className = '', color = 'cyan' 
+}) => {
+  const shadowClass = color === 'cyan' ? 'hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]' : 'hover:shadow-[0_0_20px_rgba(245,158,11,0.2)]';
+  const borderClass = color === 'cyan' ? 'border-cyan-500/20' : 'border-amber-500/20';
+  
+  return (
+    <motion.div
+      whileHover={{ y: -5 }}
+      className={`glass rounded-xl p-6 border transition-all duration-300 ${shadowClass} ${borderClass} ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+};--- START OF FILE pages/Home.tsx ---
+
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+// Fixed: Added Activity icon to imports
+import { ArrowRight, FileText, Activity } from 'lucide-react';
+import { HIGHLIGHTS } from '../constants';
+import { GlowingCard, SectionHeader } from '../components/UI';
+
+const Home = () => {
+  return (
+    <div className="overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative h-[90vh] flex items-center justify-center px-4 overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-1/4 left-1/4 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px]" />
+        
+        <div className="max-w-5xl mx-auto text-center z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-widest text-cyan-400 uppercase glass rounded-full border border-cyan-500/30">
+              Future of Autonomous HMIs
+            </span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tighter leading-tight">
+              Bridging the Gap Between <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
+                Human & Machine
+              </span>
+            </h1>
+            <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+              A Context-Aware Human-Machine Interface designed for safer, smoother transitions of control in SAE Level 2-4 driving environments.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <Link 
+                to="/architecture"
+                className="px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-all flex items-center shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+              >
+                Explore Architecture <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+              <Link 
+                to="/results"
+                className="px-8 py-4 glass hover:bg-slate-800 text-white font-bold rounded-lg transition-all flex items-center border border-slate-700"
+              >
+                View Documentation <FileText className="ml-2 w-5 h-5" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Highlights Grid */}
+      <section className="py-24 bg-slate-950/50">
+        <div className="max-w-7xl mx-auto px-4">
+          <SectionHeader 
+            title="System Core Modules" 
+            subtitle="The integrated hardware stack enabling real-time driver state estimation and adaptive feedback."
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {HIGHLIGHTS.map((h, i) => (
+              <GlowingCard key={i} color={h.color as 'cyan' | 'amber'}>
+                <div className={`mb-4 ${h.color === 'cyan' ? 'text-cyan-400' : h.color === 'amber' ? 'text-amber-500' : 'text-white'}`}>
+                  {h.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-white">{h.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{h.description}</p>
+              </GlowingCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Visual Placeholder Section */}
+      <section className="py-24 max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold mb-6">Real-Time Interaction Loop</h2>
+            <p className="text-slate-400 mb-6">
+              Our system utilizes high-frequency polling of internal driver states (Gaze, Drowsiness) paired with external context (Speed, Road Complexity) to determine the optimal Take-Over Request (TOR) modality.
+            </p>
+            <ul className="space-y-4">
+              {['Vision Processing @ 30FPS', 'Sensor Fusion Latency < 10ms', 'Adaptive Warning Intensity'].map((item, idx) => (
+                <li key={idx} className="flex items-center text-slate-300">
+                  <div className="w-2 h-2 rounded-full bg-cyan-400 mr-3" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="aspect-video glass rounded-2xl overflow-hidden border border-slate-700 flex items-center justify-center bg-slate-900 group">
+              <img 
+                src="https://picsum.photos/seed/hmi/800/600" 
+                alt="System Dashboard Visualization"
+                className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" 
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="p-4 glass rounded-full">
+                  <Activity className="w-12 h-12 text-cyan-400 animate-pulse" />
+                </div>
+              </div>
+            </div>
+            <div className="absolute -bottom-6 -right-6 glass p-4 border border-cyan-500/20 rounded-lg max-w-[200px] hidden sm:block">
+              <p className="text-[10px] text-cyan-400 font-mono mb-1 uppercase tracking-widest">Live Telemetry</p>
+              <div className="h-1 w-full bg-slate-800 rounded-full mb-2 overflow-hidden">
+                <div className="h-full w-2/3 bg-cyan-400 animate-[shimmer_2s_infinite]" />
+              </div>
+              <p className="text-xs text-white">Driver Status: Alert</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Home;--- START OF FILE pages/Architecture.tsx ---
+
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Cpu, 
+  Eye as EyeIcon, 
+  Radio, 
+  Database, 
+  ShieldCheck, 
+  Zap, 
+  Camera,
+  Layers,
+  Monitor,
+  Navigation,
+  Battery,
+  BellRing,
+  Activity,
+  Info
+} from 'lucide-react';
+import { ARCHITECTURE_MODULES } from '../constants';
+import { SectionHeader, GlowingCard } from '../components/UI';
+
+// Define the virtual grid (1000x1000)
+const GRID = {
+  W: 1000,
+  H: 600,
+  NODES: {
+    monitoring: { x: 200, y: 350 },
+    decision:   { x: 500, y: 350 },
+    feedback:   { x: 800, y: 350 },
+    power:      { x: 200, y: 150 },
+    buzzer:     { x: 500, y: 150 },
+    gps:        { x: 800, y: 150 },
+    imu:        { x: 800, y: 500 },
+    screen:     { x: 500, y: 500 },
+    camera:     { x: 100, y: 350 }
+  }
+};
+
+const TechnicalNode = ({ module, isActive, isHighlighted, onClick, icon: Icon, pos }: any) => {
+  return (
+    <motion.div
+      onClick={() => onClick(module.id)}
+      style={{ 
+        left: `${(pos.x / GRID.W) * 100}%`, 
+        top: `${(pos.y / GRID.H) * 100}%`,
+        transform: 'translate(-50%, -50%)'
+      }}
+      className={`absolute cursor-pointer flex flex-col p-4 glass rounded-2xl border transition-all duration-500 w-56 z-20 ${
+        isActive 
+          ? 'border-cyan-500 bg-slate-900/95 shadow-[0_0_40px_rgba(34,211,238,0.25)]' 
+          : isHighlighted 
+            ? 'border-cyan-400 bg-slate-900/80 shadow-[0_0_20px_rgba(34,211,238,0.15)]'
+            : 'border-slate-800 bg-slate-950/80 hover:border-slate-700'
+      }`}
+    >
+      <div className="flex justify-between items-start mb-4">
+        <div className={`p-2.5 rounded-xl transition-colors ${isActive || isHighlighted ? 'bg-cyan-500/20 text-cyan-400' : 'bg-slate-800 text-slate-500'}`}>
+          <Icon size={22} />
+        </div>
+        <div className="text-right">
+          <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest mb-1">{module.role}</p>
+          <div className={`h-1.5 w-6 ml-auto rounded-full ${isActive || isHighlighted ? 'bg-cyan-400' : 'bg-slate-800'}`} />
+        </div>
+      </div>
+      
+      <h3 className={`text-base font-bold mb-1 transition-colors ${isActive || isHighlighted ? 'text-white' : 'text-slate-400'}`}>
+        {module.name}
+      </h3>
+      <p className="text-[10px] text-slate-500 font-mono tracking-tight">{module.hardware}</p>
+
+      {(isActive || isHighlighted) && (
+        <motion.div 
+          layoutId={`node-active-ring-${module.id}`}
+          className={`absolute inset-0 rounded-2xl border-2 pointer-events-none ${isHighlighted ? 'border-cyan-400/20' : 'border-cyan-400/30'}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        />
+      )}
+    </motion.div>
+  );
+};
+
+const Peripheral = ({ icon: Icon, label, pos, isHighlighted }: any) => (
+  <div 
+    style={{ 
+      left: `${(pos.x / GRID.W) * 100}%`, 
+      top: `${(pos.y / GRID.H) * 100}%`,
+      transform: 'translate(-50%, -50%)'
+    }}
+    className="absolute flex flex-col items-center gap-2 z-10"
+  >
+    <div className={`p-3 glass border rounded-xl transition-all cursor-crosshair ${
+      isHighlighted 
+        ? 'text-cyan-400 border-cyan-400/40 bg-slate-900 shadow-[0_0_15px_rgba(34,211,238,0.2)]' 
+        : 'border-slate-800 text-slate-500 hover:text-cyan-400 hover:border-cyan-900 bg-slate-900/60'
+    }`}>
+      <Icon size={20} />
+    </div>
+    <span className={`text-[9px] font-mono uppercase tracking-tighter whitespace-nowrap transition-colors ${isHighlighted ? 'text-cyan-400' : 'text-slate-600'}`}>{label}</span>
+  </div>
+);
+
+const TraceLine = ({ d, isActive, color = "cyan", onHover, onLeave }: any) => (
+  <g className="group cursor-help" onMouseEnter={onHover} onMouseLeave={onLeave}>
+    {/* Hit area - invisible wider path for easier hovering */}
+    <path d={d} fill="none" stroke="transparent" strokeWidth="20" pointerEvents="all" />
+    
+    <path
+      d={d}
+      fill="none"
+      stroke={isActive ? (color === "cyan" ? "rgba(34, 211, 238, 0.4)" : "rgba(245, 158, 11, 0.4)") : "rgba(30, 41, 59, 0.15)"}
+      strokeWidth="2"
+      className="transition-colors duration-700"
+    />
+    {isActive && (
+      <motion.path
+        d={d}
+        fill="none" stroke={color === "cyan" ? "#22d3ee" : "#f59e0b"}
+        strokeWidth="2.5"
+        strokeDasharray="12 120"
+        strokeLinecap="round"
+        animate={{ strokeDashoffset: [132, 0] }}
+        transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+        className="drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]"
+      />
+    )}
+  </g>
+);
+
+const Architecture = () => {
+  const [selectedId, setSelectedId] = useState('module2');
+  const [hoveredTrace, setHoveredTrace] = useState<{ nodes: string[], dataType: string } | null>(null);
+  
+  const activeModule = ARCHITECTURE_MODULES.find(m => m.id === selectedId) || ARCHITECTURE_MODULES[1];
+  const n = GRID.NODES;
+
+  const isNodeHighlighted = (id: string) => hoveredTrace?.nodes.includes(id) || false;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      <SectionHeader 
+        title="Hardware Topology" 
+        subtitle="Exploring the distributed architecture across NVIDIA, Broadcom, and STMicro ecosystems."
+      />
+
+      {/* Main Diagram Canvas */}
+      <section className="mb-20">
+        <div className="relative glass rounded-[3rem] border border-slate-800 bg-slate-950/40 overflow-hidden min-h-[600px] flex items-center justify-center p-8">
+          <div className="absolute inset-0 grid-lines opacity-[0.02] pointer-events-none" />
+          
+          <svg 
+            viewBox={`0 0 ${GRID.W} ${GRID.H}`} 
+            className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
+          >
+            {/* Core Logic Traces */}
+            <TraceLine 
+              d={`M ${n.monitoring.x + 112} ${n.monitoring.y} L ${n.decision.x - 112} ${n.decision.y}`} 
+              isActive={selectedId === 'module1' || selectedId === 'module2'} 
+              onHover={() => setHoveredTrace({ nodes: ['module1', 'module2'], dataType: 'AI Perception Stream (Facial Landmarks)' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+            <TraceLine 
+              d={`M ${n.decision.x + 112} ${n.decision.y} L ${n.feedback.x - 112} ${n.feedback.y}`} 
+              isActive={selectedId === 'module2' || selectedId === 'module3'} 
+              color="amber"
+              onHover={() => setHoveredTrace({ nodes: ['module2', 'module3'], dataType: 'Actuation Commands (TOR Priority)' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+
+            {/* Power Bus */}
+            <TraceLine 
+              d={`M ${n.power.x} ${n.power.y + 25} L ${n.power.x} ${n.monitoring.y - 72}`} 
+              isActive={selectedId === 'module1'}
+              onHover={() => setHoveredTrace({ nodes: ['power', 'module1'], dataType: '5V DC Power Delivery' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+            <TraceLine 
+              d={`M ${n.power.x} ${n.power.y} L ${n.decision.x} ${n.power.y} L ${n.decision.x} ${n.decision.y - 72}`} 
+              isActive={selectedId === 'module2'} 
+              onHover={() => setHoveredTrace({ nodes: ['power', 'module2'], dataType: '5V DC Power Delivery' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+
+            {/* Sensor Traces */}
+            <TraceLine 
+              d={`M ${n.camera.x + 25} ${n.camera.y} L ${n.monitoring.x - 112} ${n.monitoring.y}`} 
+              isActive={selectedId === 'module1'} 
+              onHover={() => setHoveredTrace({ nodes: ['camera', 'module1'], dataType: 'Raw MIPI/CSI Video Data' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+            <TraceLine 
+              d={`M ${n.gps.x} ${n.gps.y + 25} L ${n.gps.x} ${n.feedback.y - 72}`} 
+              isActive={selectedId === 'module3'} color="amber" 
+              onHover={() => setHoveredTrace({ nodes: ['gps', 'module3'], dataType: 'NMEA Geo-Location Stream' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+            <TraceLine 
+              d={`M ${n.imu.x} ${n.imu.y - 25} L ${n.imu.x} ${n.feedback.y + 72}`} 
+              isActive={selectedId === 'module3'} color="amber" 
+              onHover={() => setHoveredTrace({ nodes: ['imu', 'module3'], dataType: '6-Axis IMU Telemetry (I2C)' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+            
+            {/* Display Feed */}
+            <TraceLine 
+              d={`M ${n.decision.x} ${n.decision.y + 72} L ${n.decision.x} ${n.screen.y - 25}`} 
+              isActive={selectedId === 'module2'} 
+              onHover={() => setHoveredTrace({ nodes: ['decision', 'screen'], dataType: 'HDMI/SPI Display Buffer' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+            <TraceLine 
+              d={`M ${n.buzzer.x} ${n.buzzer.y + 25} L ${n.buzzer.x} ${n.decision.y - 72}`} 
+              isActive={selectedId === 'module2'} 
+              onHover={() => setHoveredTrace({ nodes: ['buzzer', 'decision'], dataType: 'Audio PWM Modulation' })}
+              onLeave={() => setHoveredTrace(null)}
+            />
+          </svg>
+
+          {/* Tooltip Overlay */}
+          <AnimatePresence>
+            {hoveredTrace && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                className="absolute top-12 left-1/2 -translate-x-1/2 z-50 glass px-6 py-3 rounded-full border border-cyan-500/30 flex items-center gap-3 shadow-2xl pointer-events-none"
+              >
+                <Info size={16} className="text-cyan-400" />
+                <span className="text-xs font-mono font-bold text-white tracking-wide uppercase">
+                  Data: <span className="text-cyan-400">{hoveredTrace.dataType}</span>
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="relative w-full h-[600px]">
+            {/* Core Modules */}
+            <TechnicalNode module={ARCHITECTURE_MODULES[0]} icon={EyeIcon} isActive={selectedId === 'module1'} isHighlighted={isNodeHighlighted('module1')} onClick={setSelectedId} pos={n.monitoring} />
+            <TechnicalNode module={ARCHITECTURE_MODULES[1]} icon={Database} isActive={selectedId === 'module2'} isHighlighted={isNodeHighlighted('module2')} onClick={setSelectedId} pos={n.decision} />
+            <TechnicalNode module={ARCHITECTURE_MODULES[2]} icon={Radio} isActive={selectedId === 'module3'} isHighlighted={isNodeHighlighted('module3')} onClick={setSelectedId} pos={n.feedback} />
+
+            {/* Peripherals */}
+            <Peripheral icon={Battery} label="DC Power Hub" pos={n.power} isHighlighted={isNodeHighlighted('power')} />
+            <Peripheral icon={BellRing} label="Alert Buzzer" pos={n.buzzer} isHighlighted={isNodeHighlighted('buzzer')} />
+            <Peripheral icon={Navigation} label="GPS Receiver" pos={n.gps} isHighlighted={isNodeHighlighted('gps')} />
+            <Peripheral icon={Camera} label="IMX219 Camera" pos={n.camera} isHighlighted={isNodeHighlighted('camera')} />
+            <Peripheral icon={Layers} label="6-Axis IMU" pos={n.imu} isHighlighted={isNodeHighlighted('imu')} />
+            <Peripheral icon={Monitor} label="OLED HUD" pos={n.screen} isHighlighted={isNodeHighlighted('screen')} />
+          </div>
+        </div>
+      </section>
+
+      {/* Detail Panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedId}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="glass rounded-[2.5rem] p-10 border border-slate-800 h-full"
+            >
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-8 mb-12">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-1 w-8 bg-cyan-400 rounded-full" />
+                    <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.4em]">Subsystem Profile</span>
+                  </div>
+                  <h2 className="text-4xl font-bold text-white mb-3">{activeModule.name}</h2>
+                  <p className="text-slate-500 font-mono text-xs tracking-widest uppercase">{activeModule.role}</p>
+                </div>
+                
+                <div className="flex items-center gap-5 bg-slate-900/40 p-5 rounded-2xl border border-slate-800">
+                  <div className="p-3.5 bg-cyan-500/10 rounded-xl">
+                    <Cpu className="text-cyan-400" size={28} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-500 uppercase font-mono mb-1">Processor SOC</p>
+                    <span className="font-bold text-white tracking-tight">{activeModule.hardware}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                  <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-8 flex items-center gap-4">
+                    Core Services
+                    <div className="h-px flex-grow bg-slate-800" />
+                  </h4>
+                  <ul className="space-y-4">
+                    {activeModule.responsibilities.map((resp, idx) => (
+                      <motion.li 
+                        key={idx}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="flex items-center gap-4 group"
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_8px_cyan]" />
+                        <span className="text-slate-300 text-sm font-medium group-hover:text-white transition-colors">{resp}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="space-y-8">
+                  <div className="p-6 bg-slate-900/40 rounded-3xl border border-slate-800/50">
+                    <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">I/O Performance</h4>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-slate-500">Latency:</span>
+                        <span className="text-cyan-400 font-mono font-bold">{selectedId === 'module1' ? '< 33ms' : selectedId === 'module2' ? '< 100ms' : '< 5ms'}</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-slate-500">Node Priority:</span>
+                        <span className="text-white font-mono">{selectedId === 'module3' ? 'CRITICAL' : 'HIGH'}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 bg-cyan-500/5 rounded-3xl border border-cyan-500/20">
+                    <p className="text-[10px] text-cyan-400 font-black uppercase tracking-widest mb-4">Link Utilization</p>
+                    <div className="flex items-center gap-5">
+                      <div className="h-2 flex-grow bg-slate-800 rounded-full overflow-hidden">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: selectedId === 'module1' ? '85%' : '45%' }}
+                          className="h-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.5)]"
+                        />
+                      </div>
+                      <span className="text-[10px] font-mono text-cyan-400 font-bold">ACTIVE</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="lg:col-span-4 space-y-8">
+          <GlowingCard className="p-8">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 bg-cyan-500/10 rounded-xl">
+                <ShieldCheck className="text-cyan-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white tracking-tight">Security & Safety</h3>
+            </div>
+            <p className="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+              Hardware-level interrupts on the STM32 ensure that feedback triggers bypass high-level OS scheduling for deterministic performance.
+            </p>
+            <div className="p-5 bg-slate-950/60 rounded-xl border border-slate-800 border-l-cyan-500 border-l-4">
+              <p className="text-[9px] text-slate-500 uppercase font-mono mb-1">Standard Compliance</p>
+              <p className="text-white text-xs font-bold tracking-tight italic">ISO-26262 ASIL-B Compatible</p>
+            </div>
+          </GlowingCard>
+
+          <GlowingCard color="amber" className="p-8">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 bg-amber-500/10 rounded-xl">
+                <Activity className="text-amber-500" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white tracking-tight">Bus Telemetry</h3>
+            </div>
+            <div className="h-32 bg-slate-950/80 rounded-2xl border border-slate-800 p-6 flex items-end gap-1.5 overflow-hidden">
+              {[0.4, 0.7, 0.3, 0.9, 0.5, 0.8, 0.4, 0.6, 0.9, 0.5, 0.7, 0.3, 0.6].map((v, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${v * 100}%` }}
+                  transition={{ delay: i * 0.05, duration: 0.5, repeat: Infinity, repeatType: 'reverse' }}
+                  className="flex-1 bg-amber-500/30 rounded-t-sm"
+                />
+              ))}
+            </div>
+            <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest mt-6 text-center">Inter-process communication jitter</p>
+          </GlowingCard>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Architecture;--- START OF FILE pages/About.tsx ---
+
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
+import { PAIN_POINTS } from '../constants';
+import { SectionHeader, GlowingCard } from '../components/UI';
+
+const About = () => {
+  const saeLevels = [
+    { level: 0, title: 'No Automation', active: false },
+    { level: 1, title: 'Driver Assistance', active: false },
+    { level: 2, title: 'Partial Automation', active: true },
+    { level: 3, title: 'Conditional Automation', active: true },
+    { level: 4, title: 'High Automation', active: true },
+    { level: 5, title: 'Full Automation', active: false },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+        {/* The Problem */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <SectionHeader title="The Challenge" subtitle="Drawbacks of existing Human-Machine Interfaces." accent="text-amber-500" />
+          <div className="space-y-4">
+            {PAIN_POINTS.map((point, i) => (
+              <div key={i} className="flex items-start p-4 glass border-l-4 border-amber-500 rounded-r-lg">
+                <AlertCircle className="text-amber-500 mr-4 shrink-0" />
+                <div>
+                  <h4 className="font-bold text-white">{point.title}</h4>
+                  <p className="text-sm text-slate-400">{point.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* The Solution */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <SectionHeader title="The Solution" subtitle="Engineering an intelligent, adaptive ecosystem." accent="text-cyan-400" />
+          <p className="text-slate-300 leading-relaxed mb-8">
+            Our project proposes a context-aware HMI that bridges the perceptual gap between the vehicle's AI and the driver. By monitoring cognitive load and external risk simultaneously, the system dynamically scales alert modalities.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <GlowingCard>
+              <CheckCircle2 className="text-cyan-400 mb-2" />
+              <h4 className="font-bold mb-1">Adaptive Control</h4>
+              <p className="text-xs text-slate-400">System adjusts based on driver readiness levels.</p>
+            </GlowingCard>
+            <GlowingCard>
+              <CheckCircle2 className="text-cyan-400 mb-2" />
+              <h4 className="font-bold mb-1">Multi-Modal Focus</h4>
+              <p className="text-xs text-slate-400">Integrated visual, audio, and haptic feedback loops.</p>
+            </GlowingCard>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* SAE Levels Visualization */}
+      <section className="bg-slate-900/50 p-8 rounded-3xl border border-slate-800">
+        <SectionHeader 
+          title="SAE Autonomy Mapping" 
+          subtitle="How this project targets the critical transition gap in Levels 2, 3, and 4."
+        />
+        
+        <div className="flex flex-wrap justify-center gap-4 mt-12">
+          {saeLevels.map((l) => (
+            <div 
+              key={l.level}
+              className={`flex-1 min-w-[140px] p-6 rounded-xl border transition-all text-center ${
+                l.active 
+                  ? 'bg-slate-800 border-cyan-500 shadow-[0_0_20px_rgba(34,211,238,0.1)]' 
+                  : 'bg-slate-950 border-slate-800 opacity-40 grayscale'
+              }`}
+            >
+              <span className={`text-4xl font-black mb-2 block ${l.active ? 'text-cyan-400' : 'text-slate-700'}`}>
+                L{l.level}
+              </span>
+              <p className="text-xs font-bold uppercase tracking-widest text-white leading-tight">
+                {l.title}
+              </p>
+              {l.active && (
+                <div className="mt-4 flex items-center justify-center text-[10px] text-cyan-400 bg-cyan-400/10 py-1 rounded">
+                  <Info size={10} className="mr-1" /> CORE TARGET
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default About;--- START OF FILE pages/Methodology.tsx ---
+
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { BookOpen, Search, Settings, Shield } from 'lucide-react';
+import { LITERATURE_REVIEW } from '../constants';
+import { SectionHeader, GlowingCard } from '../components/UI';
+
+const Methodology = () => {
+  const steps = [
+    { icon: <Search />, title: 'Sensor Integration', desc: 'Connecting Jetson Nano (CSI Camera) and Raspberry Pi (GPS/IMU).' },
+    { icon: <Settings />, title: 'Data Processing', desc: 'Deploying facial landmark AI and Fuzzy Logic control scripts.' },
+    { icon: <BookOpen />, title: 'Decision Logic', desc: 'Evaluating contextual risk to define TOR severity (Low, Medium, High).' },
+    { icon: <Shield />, title: 'Real-time Execution', desc: 'Triggering sub-100ms haptic and visual feedback via STM32.' },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      <SectionHeader title="Research & Methodology" subtitle="Academic grounding and implementation roadmap." />
+
+      {/* Literature Review */}
+      <h3 className="text-2xl font-bold mb-8 flex items-center">
+        <BookOpen className="text-cyan-400 mr-2" /> Literature Foundation
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        {LITERATURE_REVIEW.map((paper, i) => (
+          <GlowingCard key={i}>
+            <p className="text-cyan-400 font-mono text-xs mb-2">{paper.authors} ({paper.year})</p>
+            <h4 className="font-bold text-lg mb-3 leading-tight text-white">{paper.title}</h4>
+            <div className="h-px w-full bg-slate-800 my-3" />
+            <p className="text-slate-400 text-sm italic">"{paper.focus}"</p>
+          </GlowingCard>
+        ))}
+      </div>
+
+      {/* Vertical Timeline */}
+      <div className="relative">
+        <div className="absolute left-8 top-0 bottom-0 w-px bg-slate-800" />
+        <h3 className="text-2xl font-bold mb-12 ml-16">Development Roadmap</h3>
+        
+        <div className="space-y-12">
+          {steps.map((step, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="relative ml-16"
+            >
+              <div className="absolute -left-[49px] w-8 h-8 rounded-full bg-slate-950 border border-slate-700 flex items-center justify-center text-cyan-400 z-10">
+                {step.icon}
+              </div>
+              <div className="glass p-6 rounded-xl border border-slate-800 max-w-2xl">
+                <h4 className="text-xl font-bold mb-2 text-white">{step.title}</h4>
+                <p className="text-slate-400">{step.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Methodology;--- START OF FILE pages/Results.tsx ---
+
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Trophy, CheckCircle, TrendingUp, Compass } from 'lucide-react';
+import { RESULTS_CHECKLIST } from '../constants';
+import { SectionHeader, GlowingCard } from '../components/UI';
+
+const Results = () => {
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      <SectionHeader title="Outcomes & Conclusion" subtitle="Validation of the context-aware HMI architecture." />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="glass p-8 rounded-3xl border border-cyan-500/20"
+        >
+          <div className="flex items-center mb-6">
+            <Trophy className="text-cyan-400 mr-4 w-8 h-8" />
+            <h3 className="text-2xl font-bold">Key Deliverables</h3>
+          </div>
+          <div className="space-y-4">
+            {RESULTS_CHECKLIST.map((item, i) => (
+              <div key={i} className="flex items-center space-x-3 text-slate-300">
+                <CheckCircle className="text-cyan-400 w-5 h-5 shrink-0" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="glass p-8 rounded-3xl border border-amber-500/20"
+        >
+          <div className="flex items-center mb-6">
+            <TrendingUp className="text-amber-500 mr-4 w-8 h-8" />
+            <h3 className="text-2xl font-bold">Performance Impact</h3>
+          </div>
+          <p className="text-slate-400 mb-6">
+            The integration of the STM32 feedback controller with the Jetson Nano’s AI perception resulted in a significant reduction in transition latency compared to standard single-modality systems.
+          </p>
+          <div className="h-32 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
+            <p className="text-slate-600 font-mono text-sm">[ Chart Visualization: Reaction Time Improvement ]</p>
+          </div>
+        </motion.div>
+      </div>
+
+      <section>
+        <SectionHeader title="Future Scope" subtitle="The road towards Level 5 and beyond." accent="text-amber-500" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <GlowingCard color="amber">
+            <Compass className="text-amber-500 mb-4" />
+            <h4 className="text-xl font-bold mb-2">LiDAR & V2X</h4>
+            <p className="text-slate-400">Integration with surrounding infrastructure (Vehicle-to-Everything) to predict hazards before they are visible.</p>
+          </GlowingCard>
+          <GlowingCard color="amber">
+            <TrendingUp className="text-amber-500 mb-4" />
+            <h4 className="text-xl font-bold mb-2">Extended User Trials</h4>
+            <p className="text-slate-400">Moving from simulator tests to controlled real-world environment testing with a larger demographic pool.</p>
+          </GlowingCard>
+        </div>
+      </section>
+
+      <div className="mt-32 text-center glass p-12 rounded-3xl border border-slate-800 max-w-3xl mx-auto">
+        <h2 className="text-3xl font-bold mb-4">Project Conclusion</h2>
+        <p className="text-slate-400 leading-relaxed italic">
+          "A safer autonomous transition is not just about the vehicle's capability to drive, but its capability to communicate and understand the human element within the cabin."
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Results;--- START OF FILE App.tsx ---
+
+
+import React, { Suspense, lazy } from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
+
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Architecture = lazy(() => import('./pages/Architecture'));
+const Simulation = lazy(() => import('./pages/Simulation'));
+const Methodology = lazy(() => import('./pages/Methodology'));
+const Results = lazy(() => import('./pages/Results'));
+
+const Loading = () => (
+  <div className="h-[80vh] flex flex-col items-center justify-center">
+    <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mb-4" />
+    <p className="text-cyan-400 font-mono text-sm tracking-widest animate-pulse">INITIALIZING SYSTEM...</p>
+  </div>
+);
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <Layout>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/architecture" element={<Architecture />} />
+            <Route path="/simulation" element={<Simulation />} />
+            <Route path="/methodology" element={<Methodology />} />
+            <Route path="/results" element={<Results />} />
+          </Routes>
+        </Suspense>
+      </Layout>
+    </Router>
+  );
+};
+
+export default App;--- START OF FILE pages/Simulation.tsx ---
+
+
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Zap, 
+  Eye, 
+  Activity, 
+  AlertTriangle, 
+  ShieldCheck, 
+  Volume2, 
+  Smartphone, 
+  Compass,
+  Car as CarIcon,
+  Wind,
+  Navigation
+} from 'lucide-react';
+import { SectionHeader, GlowingCard } from '../components/UI';
+
+// --- Sub-component: Realistic Canvas Road Simulation ---
+const RealisticRoad = ({ attention, complexity, hmiMode }: { attention: number, complexity: number, hmiMode: string }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [drift, setDrift] = useState(0);
+  const requestRef = useRef<number>(null);
+  const stateRef = useRef({
+    pos: 0,
+    curve: 0,
+    targetCurve: 0,
+    speed: 0,
+    drift: 0,
+    time: 0
+  });
+
+  // Physics and Logic Loop
+  useEffect(() => {
+    const animate = (time: number) => {
+      const state = stateRef.current;
+      const targetSpeed = 0.15 + (complexity / 500);
+      state.speed += (targetSpeed - state.speed) * 0.1;
+      state.pos += state.speed;
+      state.time += 0.01;
+
+      // Road Curvature Logic
+      if (Math.floor(state.pos / 50) % 2 === 0 && Math.abs(state.curve - state.targetCurve) < 0.01) {
+        state.targetCurve = (Math.random() - 0.5) * (complexity / 40);
+      }
+      state.curve += (state.targetCurve - state.curve) * 0.02;
+
+      // Drift Logic based on attention
+      if (attention < 45) {
+        const driftForce = (45 - attention) * 0.002;
+        state.drift += (Math.sin(state.time * 2) * driftForce);
+      } else {
+        state.drift *= 0.94; // Lane keep assist
+      }
+      // Keep drift in bounds
+      state.drift = Math.max(-1.5, Math.min(1.5, state.drift));
+      setDrift(state.drift * 30); // Update state for the car component
+
+      render();
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
+    const render = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const w = canvas.width;
+      const h = canvas.height;
+      const horizon = h * 0.45;
+
+      // 1. Background (Sky/Horizon)
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, w, h);
+
+      // Horizon Glow
+      const gradient = ctx.createLinearGradient(0, horizon - 50, 0, horizon);
+      gradient.addColorStop(0, 'rgba(6, 182, 212, 0)');
+      gradient.addColorStop(1, 'rgba(6, 182, 212, 0.1)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, horizon - 50, w, 50);
+
+      // 2. Draw Road Segments
+      const totalSegments = 80;
+      const segmentHeight = (h - horizon) / totalSegments;
+
+      for (let i = totalSegments; i > 0; i--) {
+        const z = i / totalSegments;
+        const nextZ = (i - 1) / totalSegments;
+        
+        // Perspective mapping
+        const perspective = (p: number) => (p / z);
+        const y = horizon + (1 - z) * (h - horizon);
+        const nextY = horizon + (1 - nextZ) * (h - horizon);
+        
+        const roadWidth = w * 0.8;
+        const currentW = (roadWidth / z) * 0.3;
+        const nextW = (roadWidth / nextZ) * 0.3;
+
+        // Curvature offset
+        const curveOffset = Math.pow(1 - z, 2) * stateRef.current.curve * 500;
+        const nextCurveOffset = Math.pow(1 - nextZ, 2) * stateRef.current.curve * 500;
+
+        const centerX = w / 2 + curveOffset;
+        const nextCenterX = w / 2 + nextCurveOffset;
+
+        // Asphalt
+        ctx.fillStyle = (Math.floor(stateRef.current.pos + i) % 2 === 0) ? '#0f172a' : '#1e293b';
+        ctx.beginPath();
+        ctx.moveTo(centerX - currentW, y);
+        ctx.lineTo(nextCenterX - nextW, nextY);
+        ctx.lineTo(nextCenterX + nextW, nextY);
+        ctx.lineTo(centerX + currentW, y);
+        ctx.fill();
+
+        // Lane Markings
+        if (Math.floor(stateRef.current.pos + i) % 4 === 0) {
+          ctx.fillStyle = 'rgba(34, 211, 238, 0.4)';
+          const stripeW = currentW * 0.05;
+          ctx.fillRect(centerX - stripeW / 2, y, stripeW, segmentHeight);
+        }
+
+        // Roadside Objects (Poles)
+        if (Math.floor(stateRef.current.pos + i) % 15 === 0) {
+          ctx.fillStyle = '#334155';
+          const poleX = centerX - currentW - (20 / z);
+          const poleH = 40 / z;
+          ctx.fillRect(poleX, y - poleH, 2 / z, poleH);
+        }
+      }
+
+      // 3. Vision Blur Layer
+      if (attention < 40) {
+        ctx.fillStyle = `rgba(2, 6, 23, ${(40 - attention) / 100})`;
+        ctx.fillRect(0, 0, w, h);
+      }
+    };
+
+    requestRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+  }, [attention, complexity]);
+
+  return (
+    <div className="relative w-full h-80 bg-slate-950 rounded-3xl border border-slate-800 overflow-hidden mb-8 shadow-inner">
+      <canvas 
+        ref={canvasRef} 
+        width={800} 
+        height={320} 
+        className="w-full h-full object-cover opacity-80"
+      />
+
+      {/* The Ego Vehicle (SVG Layer for crispness) */}
+      <motion.div
+        animate={{ 
+          x: drift,
+          rotate: drift / 4,
+          y: [0, -1, 0] 
+        }}
+        transition={{ 
+          x: { type: 'spring', damping: 20, stiffness: 60 },
+          y: { repeat: Infinity, duration: 0.15 }
+        }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+      >
+        <div className="relative group">
+          {/* Car Shadow */}
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-black/40 blur-md rounded-full" />
+          
+          {/* Car Body */}
+          <div className={`p-4 rounded-xl transition-all duration-700 border-2 ${
+            hmiMode === 'URGENT' ? 'bg-amber-500/20 border-amber-500 text-amber-500 shadow-[0_0_40px_rgba(245,158,11,0.5)]' : 
+            hmiMode === 'ADVISORY' ? 'bg-slate-100/10 border-slate-200 text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]' :
+            'bg-cyan-500/20 border-cyan-500 text-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.4)]'
+          }`}>
+            <CarIcon size={48} strokeWidth={1.5} />
+            
+            {/* Dynamic Taillights */}
+            <div className="absolute -bottom-1 left-2 flex gap-8">
+              <motion.div 
+                animate={{ opacity: hmiMode === 'URGENT' ? [0.4, 1, 0.4] : 0.2 }}
+                className={`w-3 h-1 rounded-full ${hmiMode === 'URGENT' ? 'bg-red-500 shadow-[0_0_10px_red]' : 'bg-red-900'}`} 
+              />
+              <motion.div 
+                animate={{ opacity: hmiMode === 'URGENT' ? [0.4, 1, 0.4] : 0.2 }}
+                className={`w-3 h-1 rounded-full ${hmiMode === 'URGENT' ? 'bg-red-500 shadow-[0_0_10px_red]' : 'bg-red-900'}`} 
+              />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* HUD Overlays */}
+      <div className="absolute inset-0 pointer-events-none p-8 flex flex-col justify-between">
+        <div className="flex justify-between items-start">
+          <div className="space-y-2">
+             <div className="flex items-center gap-3 px-4 py-2 bg-slate-950/90 rounded-xl border border-slate-800 backdrop-blur-md">
+                <Navigation size={14} className="text-cyan-400" />
+                <span className="text-xs font-mono font-bold text-white tracking-wider">NAV: ACTIVE</span>
+             </div>
+             <div className="flex items-center gap-3 px-4 py-2 bg-slate-950/90 rounded-xl border border-slate-800 backdrop-blur-md">
+                <Wind size={14} className="text-cyan-400" />
+                <span className="text-xs font-mono font-bold text-white tracking-wider">SPD: {Math.round(75 + complexity / 2)} KM/H</span>
+             </div>
+          </div>
+          
+          <div className={`flex items-center gap-3 px-5 py-2.5 bg-slate-950/90 rounded-xl border transition-all duration-500 backdrop-blur-md ${
+            attention < 40 ? 'border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'border-slate-800'
+          }`}>
+            <div className={`w-2 h-2 rounded-full ${attention < 40 ? 'bg-amber-500 animate-pulse' : 'bg-cyan-500'}`} />
+            <span className="text-xs font-mono font-black text-white uppercase tracking-widest">
+              Driver: {attention < 40 ? 'DISTRACTED' : 'ENGAGED'}
+            </span>
+          </div>
+        </div>
+
+        {/* Warning Banner */}
+        <AnimatePresence>
+          {hmiMode === 'URGENT' && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              className="self-center bg-amber-500 text-slate-950 px-10 py-4 rounded-2xl font-black text-sm tracking-[0.3em] flex flex-col items-center gap-2 shadow-[0_0_50px_rgba(245,158,11,0.6)]"
+            >
+              <div className="flex items-center gap-3">
+                <AlertTriangle size={24} className="animate-bounce" />
+                TAKE CONTROL IMMEDIATELY
+              </div>
+              <p className="text-[10px] opacity-70 font-mono">AUTOMATED SYSTEM DISENGAGING IN 2.4s</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Atmospheric Glare */}
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent pointer-events-none" />
+    </div>
+  );
+};
+
+const Simulation = () => {
+  const [attention, setAttention] = useState(85);
+  const [complexity, setComplexity] = useState(25);
+  
+  const riskScore = useMemo(() => {
+    const risk = ((100 - attention) * 0.7) + (complexity * 0.3);
+    return Math.min(100, Math.max(0, risk));
+  }, [attention, complexity]);
+
+  const hmiMode = useMemo(() => {
+    if (riskScore > 65) return 'URGENT';
+    if (riskScore > 35) return 'ADVISORY';
+    return 'NOMINAL';
+  }, [riskScore]);
+
+  const modeColors = {
+    NOMINAL: 'text-cyan-400',
+    ADVISORY: 'text-white',
+    URGENT: 'text-amber-500'
+  };
+
+  const bgGlow = {
+    NOMINAL: 'shadow-[0_0_40px_rgba(34,211,238,0.1)]',
+    ADVISORY: 'shadow-[0_0_50px_rgba(255,255,255,0.05)]',
+    URGENT: 'shadow-[0_0_60px_rgba(245,158,11,0.2)]'
+  };
+
+  const radius = 85;
+  const strokeWidth = 12;
+  const circumference = 2 * Math.PI * radius;
+  const arcLength = (240 / 360) * circumference;
+  const progressOffset = arcLength - (riskScore / 100) * arcLength;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      <SectionHeader 
+        title="Logic Simulator v2.0" 
+        subtitle="A high-fidelity physics-based simulation of the Context-Aware Decision engine's response to environmental and human variables."
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        {/* Simulation Controls */}
+        <div className="lg:col-span-4 space-y-6">
+          <GlowingCard className="p-8">
+            <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
+              <Compass className="text-cyan-400" size={20} />
+              Telemetry Adjustments
+            </h3>
+            
+            <div className="space-y-12">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <Eye size={14} className="text-cyan-400" />
+                    Cognitive State
+                  </label>
+                  <span className={`font-mono text-sm font-bold ${attention < 40 ? 'text-amber-500' : 'text-cyan-400'}`}>
+                    {attention}% Focus
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" max="100" 
+                  value={attention} 
+                  onChange={(e) => setAttention(parseInt(e.target.value))}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <Activity size={14} className="text-cyan-400" />
+                    Env. Difficulty
+                  </label>
+                  <span className="font-mono text-sm font-bold text-slate-400">
+                    {complexity}% Load
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" max="100" 
+                  value={complexity} 
+                  onChange={(e) => setComplexity(parseInt(e.target.value))}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+                />
+              </div>
+
+              <div className="h-px w-full bg-slate-800" />
+              
+              <div className="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 font-mono">
+                <p className="text-[10px] text-slate-500 mb-3 uppercase tracking-widest font-bold">Inference Logic</p>
+                <code className="text-[10px] text-cyan-400/80 block whitespace-pre leading-relaxed">
+                  // Real-time Fuzzy Logic{'\n'}
+                  RiskValue = α(100 - Attention) + β(Complexity){'\n'}
+                  α=0.7, β=0.3{'\n'}
+                  Current Result: <span className={modeColors[hmiMode]}>{hmiMode}</span>
+                </code>
+              </div>
+            </div>
+          </GlowingCard>
+
+          <GlowingCard color="amber" className="p-8">
+            <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-white">
+              <Zap size={18} className="text-amber-500" /> Multi-modal Feedback
+            </h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-slate-500 uppercase tracking-widest font-bold">Vibration:</span>
+                <span className={`px-3 py-1 rounded-full font-bold ${hmiMode === 'URGENT' ? 'bg-amber-500/20 text-amber-500' : 'bg-slate-800 text-slate-600'}`}>
+                  {hmiMode === 'URGENT' ? '240Hz PULSE' : hmiMode === 'ADVISORY' ? '40Hz ADVISORY' : 'OFF'}
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-slate-500 uppercase tracking-widest font-bold">Audio:</span>
+                <span className={`px-3 py-1 rounded-full font-bold ${hmiMode === 'URGENT' ? 'bg-amber-500/20 text-amber-500' : 'bg-slate-800 text-slate-600'}`}>
+                  {hmiMode === 'URGENT' ? 'CRITICAL ALERT' : 'SILENT'}
+                </span>
+              </div>
+            </div>
+          </GlowingCard>
+        </div>
+
+        {/* The Dashboard Visualization */}
+        <div className="lg:col-span-8">
+          <motion.div 
+            animate={{ 
+              borderColor: hmiMode === 'URGENT' ? 'rgba(245,158,11,0.5)' : hmiMode === 'ADVISORY' ? 'rgba(255,255,255,0.3)' : 'rgba(34,211,238,0.2)',
+            }}
+            className={`glass rounded-[3rem] p-10 border-2 transition-all duration-700 min-h-[720px] flex flex-col relative overflow-hidden bg-slate-950/40 ${bgGlow[hmiMode]}`}
+          >
+            <div className="absolute inset-0 grid-lines opacity-[0.03] pointer-events-none" />
+
+            {/* Dashboard Header */}
+            <div className="flex justify-between items-start z-10 mb-10">
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <motion.div 
+                    animate={{ scale: [1, 1.2, 1], opacity: [1, 0.4, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className={`w-2.5 h-2.5 rounded-full ${hmiMode === 'URGENT' ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,1)]' : hmiMode === 'ADVISORY' ? 'bg-white' : 'bg-cyan-400'}`} 
+                  />
+                  <span className={`text-xs font-black uppercase tracking-[0.4em] transition-colors duration-500 ${modeColors[hmiMode]}`}>
+                    HMI SYSTEM STATUS: {hmiMode}
+                  </span>
+                </div>
+                <h2 className="text-5xl font-black text-white tracking-tighter uppercase italic">Virtual Cockpit</h2>
+              </div>
+              <div className="text-right glass p-4 rounded-2xl border border-slate-800">
+                <span className="text-[10px] font-mono text-slate-500 block mb-1 tracking-widest uppercase font-bold">Sync Latency</span>
+                <span className="text-2xl font-mono text-cyan-400 font-bold">14.8ms</span>
+              </div>
+            </div>
+
+            {/* Realistic Road Simulation */}
+            <RealisticRoad attention={attention} complexity={complexity} hmiMode={hmiMode} />
+
+            {/* Gauge and Indicators */}
+            <div className="flex-grow flex flex-col items-center justify-center relative z-10">
+              <div className="relative w-72 h-72 flex items-center justify-center">
+                <svg viewBox="0 0 250 250" className="absolute inset-0 w-full h-full transform rotate-[150deg]">
+                  <circle 
+                    cx="125" cy="125" r={radius} 
+                    fill="none" stroke="currentColor" strokeWidth={strokeWidth} 
+                    strokeDasharray={`${arcLength} ${circumference - arcLength}`}
+                    strokeLinecap="round"
+                    className="text-slate-900"
+                  />
+                  <motion.circle 
+                    cx="125" cy="125" r={radius} 
+                    fill="none" stroke="currentColor" strokeWidth={strokeWidth} 
+                    strokeDasharray={`${arcLength} ${circumference - arcLength}`}
+                    strokeDashoffset={progressOffset}
+                    strokeLinecap="round"
+                    animate={{ strokeDashoffset: progressOffset }}
+                    transition={{ type: 'spring', damping: 25, stiffness: 50 }}
+                    className={`transition-colors duration-700 ${
+                      hmiMode === 'URGENT' ? 'text-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.5)]' : 
+                      hmiMode === 'ADVISORY' ? 'text-slate-100' : 'text-cyan-400'
+                    }`}
+                  />
+                </svg>
+
+                <div className="text-center z-10 transform -mt-4">
+                  <span className="text-slate-500 text-[10px] uppercase font-black block tracking-[0.5em] mb-3">Risk Assessment</span>
+                  <div className="flex items-baseline justify-center">
+                    <motion.span 
+                      key={Math.round(riskScore)}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-7xl font-black text-white tracking-tighter"
+                    >
+                      {Math.round(riskScore)}
+                    </motion.span>
+                    <span className="text-slate-400 text-xl font-mono ml-2">%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-6 mt-12">
+                <Indicator icon={<Smartphone size={20} />} label="Haptic" active={hmiMode !== 'NOMINAL'} alert={hmiMode === 'URGENT'} />
+                <Indicator icon={<Volume2 size={20} />} label="Audio" active={hmiMode === 'URGENT'} alert={hmiMode === 'URGENT'} />
+                <Indicator icon={<ShieldCheck size={20} />} label="Security" active={true} alert={false} />
+              </div>
+            </div>
+
+            {/* Bottom Bar */}
+            <div className="mt-12 pt-8 border-t border-slate-800/50 flex justify-between items-end z-10">
+              <div className="flex gap-12">
+                <div>
+                  <p className="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2">Process ID</p>
+                  <p className="text-xs text-cyan-400 font-mono font-bold tracking-tighter">THREAD_0x4A29B</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2">IO Buffer</p>
+                  <p className="text-xs text-white font-mono font-bold">1024 KB/s</p>
+                </div>
+              </div>
+              <div className="bg-slate-900/60 px-6 py-4 rounded-2xl border border-slate-800 backdrop-blur-sm">
+                 <p className="text-[9px] text-slate-500 font-black uppercase tracking-[0.2em] mb-2">CPU LOAD 01/02/03</p>
+                 <div className="flex gap-1.5 items-end">
+                   {[40, 70, 30, 90, 50, 80, 45, 65, 35, 75, 55, 85].map((v, i) => (
+                     <div key={i} className="w-2 h-4 bg-slate-800 rounded-sm relative overflow-hidden">
+                       <motion.div 
+                        animate={{ height: [`${v}%`, '100%', `${v}%`] }} 
+                        transition={{ repeat: Infinity, duration: 1.5, delay: i * 0.05 }}
+                        className="absolute bottom-0 w-full bg-cyan-500/80" 
+                       />
+                     </div>
+                   ))}
+                 </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Indicator = ({ icon, label, active, alert }: any) => (
+  <div className={`px-5 py-3 rounded-2xl border flex items-center gap-4 transition-all duration-500 backdrop-blur-md ${
+    active 
+      ? (alert ? 'bg-amber-500/10 border-amber-500 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'bg-cyan-500/10 border-cyan-500/40 text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.1)]') 
+      : 'bg-slate-900/40 border-slate-800 text-slate-700'
+  }`}>
+    <div className={active && alert ? 'animate-pulse' : ''}>
+      {icon}
+    </div>
+    <span className="text-[10px] font-black uppercase tracking-[0.2em]">{label}</span>
+  </div>
+);
+
+export default Simulation;Implement interactive charts using recharts for the simulation page to visualize the relationship between driver attention, environmental complexity, and the HMI's risk score.

@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Cpu } from 'lucide-react';
+import { Menu, X, Cpu, FileText } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 
 const Navbar = () => {
@@ -74,9 +73,18 @@ const Footer = () => (
   <footer className="border-t border-slate-800 py-12 bg-slate-950">
     <div className="max-w-7xl mx-auto px-4 text-center">
       <Cpu className="mx-auto text-slate-600 mb-4" />
-      <p className="text-slate-500 text-sm">
+      <p className="text-slate-500 text-sm mb-4">
         © 2024 Engineering Project Portfolio. Developed for Autonomous HMI Research.
       </p>
+      <div className="flex justify-center">
+        <a 
+          href="original_prompt.txt" 
+          target="_blank" 
+          className="flex items-center gap-2 text-slate-600 hover:text-cyan-400 text-[10px] uppercase tracking-widest transition-colors font-mono"
+        >
+          <FileText size={12} /> Project Brief Source
+        </a>
+      </div>
     </div>
   </footer>
 );
